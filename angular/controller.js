@@ -1,7 +1,6 @@
 app.controller('Loginctrl', function($scope, $rootScope,$localStorage,  $location, loginService) {
   $rootScope.show = false
   $scope.login= () =>{
-    debugger
       $scope.err = null;
       if ($scope.email === null || $scope.email === undefined) {
         $scope.err = "Please Provide Email Address"
@@ -20,7 +19,6 @@ app.controller('Loginctrl', function($scope, $rootScope,$localStorage,  $locatio
                 $scope.password = ''
                 return alert('Wrong Password')
               }
-              debugger
                 if (approve) {
                 var data = {
                       userIsloggin: true,
@@ -48,11 +46,11 @@ app.controller('portal', function($scope, $location, $rootScope, portalService, 
     $scope.ActiveContent = 'tab-pane fade show active'
     $scope.ActivePortfolio = 'nav-item nav-link'
     $scope.ActiveContentPortfolio = 'tab-pane fade '
+    GetAllServices();
     // $scope.Services = true;
     // $scope.Active = 'nav-item nav-link'
     //     $scope.ActiveContent = 'tab-pane fade'
     $scope.Services = () => {
-        debugger
         $scope.Active = null
         $scope.ActiveContent = null
         $scope.ActivePortfolio = null
@@ -110,7 +108,6 @@ app.controller('portal', function($scope, $location, $rootScope, portalService, 
 
 
     $scope.postDAta = (choose) => {
-      debugger
       if ($scope.title === null || $scope.title === undefined) {
         $scope.err = "Please Provide title"
         return alert($scope.err)
@@ -137,7 +134,6 @@ app.controller('portal', function($scope, $location, $rootScope, portalService, 
         case 'services':
             portalService.addService($scope.title, $scope.content, data.id, $scope.myCroppedImage)
             .then(response =>{
-              debugger
               $scope.title = ''
               $scope.content = ''
               $scope.addimageBtnTitle = ''
@@ -151,7 +147,6 @@ app.controller('portal', function($scope, $location, $rootScope, portalService, 
         case 'portfolio':
           portalService.addPortfolio($scope.title, $scope.content, data.id, $scope.myCroppedImage)
             .then(response =>{
-              debugger
               $scope.title = ''
               $scope.Modal_header = '';
               $scope.Bottom_header = '';
@@ -167,6 +162,77 @@ app.controller('portal', function($scope, $location, $rootScope, portalService, 
     }
     $scope.ServiceAddArray =()=>{
       // $localStorage.services 
+    }
+    function GetAllServices() {
+      portalService.getAllservice().then(response =>{
+        const abc = response.data
+        $scope.Services = abc.Services;
+        $localStorage.Services = $scope.Services
+        console.log(response)
+      })
+    }
+    $scope.header = null
+    $scope.EditServices = (id)=> {
+      debugger
+      $scope.imageName = null
+      $('#betaModal').modal();
+      console.log(id)
+      $localStorage.currentSelectID = id
+      $scope.header = 'Service'
+      const response = $localStorage.Services
+      angular.forEach(response, function(value, key) {                    
+        if(value.id == id) {
+          debugger
+          console.log(value)
+            $scope.title =  response[key].title;
+            $localStorage.currentTitle = $scope.title
+            $scope.content = response[key].content;
+            $localStorage.currentContent = $scope.content
+            $scope.id = response[key].id;
+            $scope.imageName = response[key].imageName;
+        }
+        if ($scope.imageName === null) { return }
+        portalService.getimage($scope.imageName,$scope.header).then(function(response){
+          $scope.image = response.data.base64String
+        })
+    });
+    }
+    $scope.cleanId =()=> {
+      $localStorage.currentSelectID = null
+    }
+    $scope.dataAfterEdit =(which)=> {
+      debugger
+      switch(which){
+        case 'Service':
+         const id = $localStorage.currentSelectID
+         if ($scope.title === $localStorage.currentTitle) {
+           return alert('change First')
+         }
+         if ($scope.content === $localStorage.currentContent) {
+          return alert('change First')
+        }
+        if ($scope.title !== null && $scope.content !== null) {
+          portalService.EditByApi($scope.title, $scope.content, id, $scope.header).then(function(response){
+            $scope.title = ''
+            $scope.header = ''
+            $localStorage.currentSelectID = null
+            $localStorage.currentTitle = null
+            $('#betaModal').modal('hide');
+            $localStorage.currentContent = null
+            $scope.content = ''
+            GetAllServices()
+          })
+        }
+         $scope.
+          break;
+          case 'Portfolio':
+          break;
+          case 'ServiceImage':
+          
+          break;
+          case 'PortfolioImage':
+          break;
+      }
     }
      
   });

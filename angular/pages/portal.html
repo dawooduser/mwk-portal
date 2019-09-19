@@ -30,6 +30,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                              <tr ng-repeat="Services in Services">
+                                <td>{{$index+1}}</td>
+                                <td ng-click="EditServices(Services.id)">{{Services.title}}</td>
+                                <td ng-click="EditServices(Services.id)">{{Services.content}}</td>
+                                <td ng-click="EditServices(Services.id)">delete</td>
+                              </tr>
                                
                             </tbody>
                         </table>
@@ -154,7 +160,51 @@
       </div>
     </div>
   </div>
-  
+
+  <div id="betaModal" class="modal hide fade">
+      <div class="modal-header">
+              <button class="close" data-dismiss="modal" ng-click="cleanId()">×</button>
+              <h3>{{header}}</h3>
+      </div>
+      <div class="modal-body">
+          <div class="row-fluid">
+              <div class="span12">
+                  <div class="span6" ng-click="dataAfterEdit(header)">
+                  <div class="logowrapper" ng-if="header === Service">
+                      <img class="logoicon" data-ng-src="data:image/png;base64,{{image}}" alt="App Logo"/>
+                  </div>
+                  <div class="logowrapper" ng-if="header === Portfolio">
+                    <img class="logoicon" data-ng-src="data:image/png;base64,{{image}}" alt="App Logo"/>
+                </div>
+                  </div>
+                  <div class="span6">
+                      <form class="form-horizontal">
+                          <p class="help-block">Title</p>
+                          <div class="input-prepend">
+                              <span class="add-on">*</span><input class="prependedInput" ng-model="title" size="16" type="text">
+                          </div>
+                          <p class="help-block">Content</p>
+                          <div class="input-prepend">
+                              <span class="add-on"></span><input class="prependedInput" ng-model="content" size="16" type="textarea">
+                          </div>
+                            <hr>
+                          <div class="help-block" ng-if="header === Service">
+                              <button ng-click="dataAfterEdit('Service')" class="btn btn-large btn-info">Saved</button>
+                          </div>
+                          <div class="help-block" ng-if="header === Portfolio">
+                            <button ng-click="dataAfterEdit('Portfolio')" class="btn btn-large btn-info">Saved</button>
+                        </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+
+
 
 
   <style>

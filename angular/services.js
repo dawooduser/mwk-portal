@@ -33,6 +33,22 @@ app.service('portalService', function($localStorage,  $location, OnstartUp, $htt
         }
         return $http.post(`${url}/addPortfolio`, data)
     }
+    this.getAllservice=()=>{
+        return $http.get(`${url}/GetAllServices?id=0G4HDqIgnghPY3Yk0fbu`)
+    }
+    this.getimage=(imageName,whichOne)=>{
+        return $http.get(`${url}/imageFetch?imageName=${imageName}&whichOne=${whichOne}`)
+    }
+    this.EditByApi=(title, content, id, which)=>{
+        var data ={
+            title: title,
+            content: content,
+            id: id,
+            which:which
+        }
+        return $http.post(`${url}/EditApi`, data)
+
+    }
 });
 
 app.factory('OnstartUp', function($localStorage, $location) {

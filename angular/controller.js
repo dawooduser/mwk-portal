@@ -218,6 +218,7 @@ app.controller('portal', function($scope, $location, $rootScope, portalService, 
             $localStorage.currentSelectID = null
             $localStorage.currentTitle = null
             $('#betaModal').modal('hide');
+      imageUploader
             $localStorage.currentContent = null
             $scope.content = ''
             GetAllServices()
@@ -234,7 +235,28 @@ app.controller('portal', function($scope, $location, $rootScope, portalService, 
           break;
       }
     }
-     
+
+    $scope.editImage = (which) =>{
+      $('#betaModal').modal('hide');
+      $('#imageUploader').modal();
+      if (which === 'services') {
+      $scope.editService =true
+      $scope.editPortfolio =false
+      return
+    }
+    $scope.editService =false
+    $scope.editPortfolio =true
+  }
+  $scope.editImageSubmit = (which) =>{
+    $('#imageUploader').modal('hide');
+    $scope.editService = undefined
+    $scope.editPortfolio = undefined
+    if (which === 'services') {
+   
+    return
+  }
+}
+
   });
   app.controller('Nav_controller', function($scope, $location, $rootScope, portalService) {
     $rootScope.show = false

@@ -155,6 +155,14 @@
                 there
                 <button type="submit" ng-click="addImage('portfolio')" class="btn-check-login">{{addimageBtnTitle}}</button>
             </div>
+            <div class="btn-check-log" ng-if="editService">
+              here
+                  <button type="submit" ng-click="editImageSubmit('services')" class="btn-check-login">{{addimageBtnTitle}}</button>
+              </div>
+              <div class="btn-check-log" ng-if="editPortfolio">
+                  there
+                  <button type="submit" ng-click="editImageSubmit('portfolio')" class="btn-check-login">{{addimageBtnTitle}}</button>
+              </div>
       </div>
         </div>
       </div>
@@ -171,10 +179,10 @@
               <div class="span12">
                   <div class="span6" ng-click="dataAfterEdit(header)">
                   <div class="logowrapper" ng-if="header === Service">
-                      <img class="logoicon" data-ng-src="data:image/png;base64,{{image}}" alt="App Logo"/>
+                      <img class="logoicon" ng-click="editImage('services')" data-ng-src="data:image/png;base64,{{image}}" alt="App Logo"/>
                   </div>
                   <div class="logowrapper" ng-if="header === Portfolio">
-                    <img class="logoicon" data-ng-src="data:image/png;base64,{{image}}" alt="App Logo"/>
+                    <img class="logoicon" ng-click="editImage('portfolio')" data-ng-src="data:image/png;base64,{{image}}" alt="App Logo"/>
                 </div>
                   </div>
                   <div class="span6">

@@ -1,4 +1,4 @@
-var app = angular.module("app", ["ngRoute", "ngStorage"]);
+var app = angular.module("app", ["ngRoute", "ngStorage",]);
 // app.value('url', 'http://localhost:5000');
 app.config(function($routeProvider, $locationProvider) {
     $routeProvider

@@ -12,17 +12,11 @@ app.controller('project', function($compile, $scope, mainser, $localStorage) {
           if (this.files) $.each(this.files, readAndPreview);
         
           function readAndPreview(i, file) {
-              var id = i
-            
             if (!/\.(jpe?g|png|gif)$/i.test(file.name)){
               return alert(file.name +" is not an image");
             } // else...
-            
             var reader = new FileReader();
-        
             $(reader).on("load", function() {
-              // $preview.append($('<img />', {src:this.result, height:100, id: i } ));
-              // var imgTAg = $('<img ng-click="click()"/>', {src:this.result, height:100, id: i})
               var img = document.createElement('img');
               img.src = this.result;
               img.height = "100";
@@ -34,8 +28,6 @@ app.controller('project', function($compile, $scope, mainser, $localStorage) {
                 };
             })(i);
             $preview.append(img)
-              //Let's say you have element with id 'foo' in which you want to create a button
-              // angular.element(document.getElementById('preview')).append(temp);
         });
             reader.onloadend = function () {
                 var b64 = reader.result.replace(/^data:.+;base64,/, '');
@@ -43,31 +35,59 @@ app.controller('project', function($compile, $scope, mainser, $localStorage) {
                 arr.push(b64)
             }
             reader.readAsDataURL(file);
-            function doSomething(url){
-              console.log(url);
-              debugger
-              $('img').css('border-radius', '0%');
-              var id = `#${url}`
-              debugger
-              $(id).css('border-radius', '50%');
-              arr.forEach((v, k) => {
-                console.log(v)
-                if (k === url) {
-                  const data = arr[k]
-                  projectThumbNail.headerImage= data
-                } else {
-                  err.push(v)
-                  projectThumbNail.image = err
-                }
-              })
           }
-          }
-         
+          function doSomething(url){
+            console.log(url);
+            debugger
+            $('img').css('border-radius', '0%');
+            var id = `#${url}`
+            debugger
+            $(id).css('border-radius', '50%');
+            arr.forEach((v, k) => {
+              console.log(v)
+              if (k === url) {
+                let data = arr[k]
+                data = LZString.compressToBase64(data)
+                projectThumbNail.headerImage= data
+              } else {
+                const w = LZString.compressToBase64(v)
+                err.push(w)
+                projectThumbNail.image = err
+              }
+            })
+            $scope.imagesData = projectThumbNail
         }
-        
+        }
         $('#multi-images-selector').on("change", previewImages);
-        // function click(id) {
-        //   console.log(id)
-        //   debugger
-        // }
+
+        $scope.addTitleAndDescription=()=>{
+          $('#modal-image').modal('toggle');
+          $('#modal-TitleDescription').modal('toggle');
+        }
+        $scope.addProject=()=>{
+          const { ptitle, pdescription, imagesData } = $scope
+      if (ptitle === null || ptitle === undefined &&
+        pdescription === null || pdescription === undefined){
+         $scope.ptitle = ''
+         $scope.pdescription = ''
+        return alert('Please Input Some Data')
+      }
+      var data = {
+        ptitle,
+        pdescription,
+        imagesData
+      }
+      mainser.addProject(data).then(response => {
+        getAllProject()()
+        $scope.ptitle = null
+        $scope.pdescription = null
+        // $scope.imageName = null
+        $('#modal-TitleDescription').modal('hide');
+      })
+   }
+   function getAllProject() {
+    mainser.getProject().then(response => {
+      $scope.Project = response.data;
+  })
+}
 })

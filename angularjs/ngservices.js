@@ -6,6 +6,9 @@ app.service('mainser', function($http) {
     this.addservice =(data)=>{
         return $http.post(`${url}/addservice`, data)
     }
+    this.addProject =(data)=>{
+        return $http.post(`${url}/addProject`, data)
+    }
     this.generate_token = (length) => {
         //edit the token allowed characters
         var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
@@ -18,6 +21,9 @@ app.service('mainser', function($http) {
     }
     this.getservices=()=>{
         return $http.get(`${url}/getservice`)
+    }
+    this.getProject=()=>{
+        return $http.get(`${url}/getProject`)
     }
     this.uploadImage=(id, image)=>{
         const data = {

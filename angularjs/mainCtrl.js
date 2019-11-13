@@ -4,7 +4,7 @@ app.controller('mainCtrl', function($scope, mainser, $localStorage, $location) {
    // $('#loginModal').modal('show');
 
    if ($localStorage.uID === null ||  $localStorage.uID === undefined) {
-   return $('#loginModal').modal({
+  $('#loginModal').modal({
        backdrop: 'static',
        keyboard: false
      });
@@ -89,6 +89,7 @@ app.controller('mainCtrl', function($scope, mainser, $localStorage, $location) {
       })
    }
    function getAllservices() {
+    if ($localStorage.uID === null ||  $localStorage.uID === undefined) return;
     if (!$scope.servicebool) return;
     mainser.getservices().then(response => {
       console.log(response)

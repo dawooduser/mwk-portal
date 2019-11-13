@@ -30,7 +30,7 @@ app.controller('project', function($compile, $scope, mainser, $localStorage) {
             $preview.append(img)
         });
             reader.onloadend = function () {
-                var b64 = reader.result.replace(/^data:.+;base64,/, '');
+                var b64 = reader.result.replace(/^data:image\/png;base64,/, '')
                 console.log(b64);
                 arr.push(b64)
             }
@@ -47,11 +47,11 @@ app.controller('project', function($compile, $scope, mainser, $localStorage) {
               console.log(v)
               if (k === url) {
                 let data = arr[k]
-                data = LZString.compressToBase64(data)
+                // data = LZString.compressToBase64(data)
                 projectThumbNail.headerImage= data
               } else {
-                const w = LZString.compressToBase64(v)
-                err.push(w)
+                // const w = LZString.compressToBase64(v)
+                err.push(v)
                 projectThumbNail.image = err
               }
             })
@@ -78,7 +78,8 @@ app.controller('project', function($compile, $scope, mainser, $localStorage) {
         imagesData
       }
       mainser.addProject(data).then(response => {
-        getAllProject()()
+        debugger
+        getAllProject()
         $scope.ptitle = null
         $scope.pdescription = null
         // $scope.imageName = null
